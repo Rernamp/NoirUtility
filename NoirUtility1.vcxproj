@@ -28,6 +28,9 @@
     <ClCompile Include="Dependencies\imgui\imgui_draw.cpp" />
     <ClCompile Include="Dependencies\imgui\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Dependencies\implot\implot.cpp" />
+    <ClCompile Include="Dependencies\implot\implot_demo.cpp" />
+    <ClCompile Include="Dependencies\implot\implot_items.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\imgui\backends\imgui_impl_dx10.h" />
@@ -38,6 +41,8 @@
     <ClInclude Include="Dependencies\imgui\imstb_rectpack.h" />
     <ClInclude Include="Dependencies\imgui\imstb_textedit.h" />
     <ClInclude Include="Dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="Dependencies\implot\implot.h" />
+    <ClInclude Include="Dependencies\implot\implot_internal.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -92,7 +97,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)Dependencies\imgui\;$(ProjectDir)Dependencies\imgui\backends\;$(ProjectDir)Application\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Dependencies\imgui\;$(ProjectDir)Dependencies\imgui\backends\;$(ProjectDir)Application\;$(ProjectDir)Dependencies\implot\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

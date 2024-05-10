@@ -1,30 +1,52 @@
 #include "imgui.h"
+#include <implot.h>
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <math.h>
 
 class Application {
-public:
+public:	
+	static float function(float x) {
+		return 2 * x * x + 5 * x - 3;
+	}
+	static float dFunction(float x) {
+		return 4 * x + 5;
+	}
+	Application() {
+		updateArray();
+	}
 	void update() {
-		ImGui::Begin("My First ImGui Window");
-
-		ImGui::Text("Game field");
-		ImGui::BeginTable("Persons", columns);
-		for (std::size_t column = 0; column < columns; ++column) {
-			ImGui::TableNextRow();
-			for (std::size_t row = 0; row < rows; ++row) {
-				ImGui::TableNextColumn();
-				std::string data = "column: " + std::to_string(column) + " row: " + std::to_string(row);
-				ImGui::Text(data.c_str());
+		if (ImGui::Begin("My First ImGui Window", nullptr, ImGuiWindowFlags_NoCollapse)) {
+			if (ImGui::SliderInt("Iteration", &_iteration, 1, 1000)) {
+				updateArray();
 			}
+			if (ImPlot::BeginPlot("My Plot")) {
+				ImPlot::PlotLine("My Line Plot", timePoints.data(), yData.data(), timePoints.size());
+				ImPlot::EndPlot();
+			}
+			ImGui::End();
 		}
-		ImGui::EndTable();
-
-		
-
-		ImGui::End();
 	}
 private:
-	std::size_t rows = 5;
-	std::size_t columns = 5;
+	void updateArray() {
+		static constexpr float pi = 3.14159265358979f;
+		static constexpr float deltaTime = 1e-3f;
+		static constexpr float startTime = -10.f;
+		static constexpr float stopTime = 10.f;
+		static constexpr float plotTime = 1.f;
+
+		std::size_t numberData = (stopTime - startTime) / deltaTime;
+		yData.clear();
+		timePoints.clear();
+		for (std::size_t i = 0; i < numberData; i++) {
+			float timePoint = startTime + static_cast<float>(i) * deltaTime;
+			yData.push_back(function(timePoint));
+			timePoints.push_back(timePoint);
+		}
+	}
+	int _iteration = 1;
+	std::vector<float> timePoints {};
+	std::vector<float> yData{};
 };

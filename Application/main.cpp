@@ -5,6 +5,8 @@
 #include <d3d10.h>
 #include <tchar.h>
 
+#include <implot.h>
+
 #include <Application.h>
 
 // Data
@@ -44,6 +46,8 @@ int main(int, char**)
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImPlot::CreateContext();
+
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -73,7 +77,7 @@ int main(int, char**)
     //IM_ASSERT(font != nullptr);
 
     // Our state
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    ImVec4 clear_color = ImVec4(0.f, 0.0f, 0.0f, 0.00f);
     
     Application app {};
     // Main loop
@@ -101,11 +105,21 @@ int main(int, char**)
             g_ResizeWidth = g_ResizeHeight = 0;
             CreateRenderTarget();
         }
-
+        
         // Start the Dear ImGui frame
         ImGui_ImplDX10_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
+
+#ifdef IMGUI_HAS_VIEWPORT
+        ImGuiViewport* viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(viewport->GetWorkPos());
+        ImGui::SetNextWindowSize(viewport->GetWorkSize());
+        ImGui::SetNextWindowViewport(viewport->ID);
+#else 
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+        ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+#endif
 
         app.update();
 
@@ -122,6 +136,8 @@ int main(int, char**)
 
     ImGui_ImplDX10_Shutdown();
     ImGui_ImplWin32_Shutdown();
+    
+    ImPlot::DestroyContext();
     ImGui::DestroyContext();
 
     CleanupDeviceD3D();
